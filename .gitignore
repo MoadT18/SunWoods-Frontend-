@@ -21,3 +21,9 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+node_modules/
+dist/
+*.log
+*.env
+.DS_Store

@@ -67,7 +67,7 @@ export default {
       try {
         console.log('Saving changes...');
         // Send a PUT request to update the user via the API endpoint
-        await axios.put(`https://sunwoodsapi.azurewebsites.net/User/${this.editedUser.id}`, this.editedUser);
+        await axios.put(`https://localhost:43203/User/${this.editedUser.id}`, this.editedUser);
         console.log('Changes saved successfully.');
 
         // Update the user object in localStorage

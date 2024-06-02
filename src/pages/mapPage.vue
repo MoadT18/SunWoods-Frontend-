@@ -111,7 +111,7 @@ export default {
     },
     async showLocationInfo(id) {
   try {
-    const response = await fetch(`https://sunwoodsapi.azurewebsites.net/Camping/${id}`);
+    const response = await fetch(`https://localhost:43203/Camping/${id}`);
     if (!response.ok) throw new Error('Failed to fetch camping data');
     
     this.selectedCamping = await response.json();

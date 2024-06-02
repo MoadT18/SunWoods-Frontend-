@@ -304,7 +304,7 @@ export default {
     }
 
     
-        const response = await axios.post('https://sunwoodsapi.azurewebsites.net/User/resetpassword/verify', {
+        const response = await axios.post('https://localhost:43203/User/resetpassword/verify', {
           email: this.resetPasswordForm.email,
           code: this.resetPasswordForm.code
         });
@@ -339,7 +339,7 @@ export default {
     },
     async sendResetPasswordEmail() {
       try {
-        const response = await axios.post('https://sunwoodsapi.azurewebsites.net/User/resetpassword', { email: this.resetPasswordForm.email });
+        const response = await axios.post('https://localhost:43203/User/resetpassword', { email: this.resetPasswordForm.email });
         console.log('Reset password email sent successfully:', response.data);
         this.showResetCode = true;
         this.resetError = null;
@@ -350,7 +350,7 @@ export default {
     },
     async resetPassword() {
       try {
-        const response = await axios.post('https://sunwoodsapi.azurewebsites.net/User/resetpassword/update', {
+        const response = await axios.post('https://localhost:43203/User/resetpassword/update', {
           email: this.resetPasswordForm.email,
           newPassword: this.resetPasswordForm.newPassword
         });
@@ -426,7 +426,7 @@ export default {
       try {
         this.loginStatus = '';
 
-        const response = await axios.post('https://sunwoodsapi.azurewebsites.net/User/login', this.loginForm);
+        const response = await axios.post('https://localhost:43203/User/login', this.loginForm);
         
         if (response.data && response.data.roles) {
           if (response.data.roles === 1) {
@@ -477,7 +477,7 @@ export default {
     }
 
     this.loginStatus = '';
-    await axios.post('https://sunwoodsapi.azurewebsites.net/User', {
+    await axios.post('https://localhost:43203/User', {
       firstName: this.createAccountForm.firstName,
       lastName: this.createAccountForm.lastName,
       userName: this.createAccountForm.userName,

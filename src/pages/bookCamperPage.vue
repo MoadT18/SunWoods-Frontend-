@@ -198,7 +198,7 @@ export default {
 
       try {
         // Make API call to book the campsite
-        const response = await axios.post('https://sunwoodsapi.azurewebsites.net/Booking', bookingData);
+        const response = await axios.post('https://localhost:43203/Booking', bookingData);
         console.log('Booking successful:', response.data);
         this.bookingSuccess = true; // Set bookingSuccess flag to true
 
@@ -228,7 +228,7 @@ export default {
       const updatedCampingDetails = { ...this.campingDetails, availableSpots: availableSpots - 1 };
 
       try {
-        const response = await axios.put(`https://sunwoodsapi.azurewebsites.net/Camping/${campingId}`, updatedCampingDetails);
+        const response = await axios.put(`https://localhost:43203/Camping/${campingId}`, updatedCampingDetails);
         
         console.log("Camping spot updated:", response.data);
         // You may want to handle the response from the API here
@@ -257,7 +257,7 @@ export default {
         };
 
         // Make API call to your backend server to send email
-        const response = await axios.post('https://sunwoodsapi.azurewebsites.net/api/Email/send', emailData);
+        const response = await axios.post('https://localhost:43203/api/Email/send', emailData);
 
         console.log('Booking confirmation email sent.');
         console.log('Response:', response.data);

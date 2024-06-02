@@ -5,12 +5,15 @@
       <img src="../assets/bannerHome.jpg" class="w-full h-full object-cover" alt="Home Banner">
       <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-70"></div>
       <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-center font-bold text-5xl shadow-lg">
-        <span class="font-black text-shadow">Sun Woods</span>
+          <span class="font-black text-shadow">Sun Woods</span>
       </div>
-      <div id="scroll-down-button" class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white text-center cursor-pointer animate-bounce">
-        <span class="text-lg">Scroll Down</span>
-        <svg class="w-6 h-6 mx-auto mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-      </div>
+      <div id="scroll-down-button" class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white cursor-pointer animate-bounce">
+        <span class="text-lg">Click to Scroll Down</span>
+        <svg class="w-6 h-6 mx-auto mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
+    </div>
+  
     </div>
 
     <!-- About Section -->
@@ -164,9 +167,9 @@ export default {
     async fetchData() {
       try {
         const [ratingsRes, usersRes, campingsRes] = await Promise.all([
-          fetch('https://sunwoodsapi.azurewebsites.net/Rating/Top3Ratings').then(res => res.json()),
-          fetch('https://sunwoodsapi.azurewebsites.net/User').then(res => res.json()),
-          fetch('https://sunwoodsapi.azurewebsites.net/Camping').then(res => res.json())
+          fetch('https://localhost:43203/Rating/Top3Ratings').then(res => res.json()),
+          fetch('https://localhost:43203/User').then(res => res.json()),
+          fetch('https://localhost:43203/Camping').then(res => res.json())
         ]);
 
         this.ratings = ratingsRes.map(rating => ({

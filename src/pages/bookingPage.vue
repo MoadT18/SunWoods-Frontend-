@@ -75,7 +75,7 @@ export default {
     async fetchBookings() {
       try {
         const user = JSON.parse(localStorage.getItem('user'));
-        const response = await axios.get(`https://sunwoodsapi.azurewebsites.net/Booking/User/${user.id}`);
+        const response = await axios.get(`https://localhost:43203/Booking/User/${user.id}`);
         this.bookings = response.data;
         await this.fetchCampsiteTitles();
       } catch (error) {
@@ -85,7 +85,7 @@ export default {
     async fetchCampsiteTitles() {
       try {
         for (const booking of this.bookings) {
-          const response = await axios.get(`https://sunwoodsapi.azurewebsites.net/Camping/${booking.campsiteId}`);
+          const response = await axios.get(`https://localhost:43203/Camping/${booking.campsiteId}`);
           this.$set(this.campsiteTitles, booking.campsiteId, response.data.title);
         }
       } catch (error) {
@@ -102,7 +102,7 @@ export default {
     },
     async cancelBooking(bookingId) {
       try {
-        await axios.delete(`https://sunwoodsapi.azurewebsites.net/Booking/${bookingId}`);
+        await axios.delete(`https://localhost:43203/Booking/${bookingId}`);
         this.bookings = this.bookings.filter(booking => booking.id !== bookingId);
         this.cancellationPending = null;
       } catch (error) {

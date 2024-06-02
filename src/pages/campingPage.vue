@@ -184,7 +184,7 @@ export default {
 },
     // Fetch campings data
     fetchCampings() {
-      const url = `https://sunwoodsapi.azurewebsites.net/Camping`;
+      const url = `https://localhost:43203/Camping`;
       fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -198,7 +198,7 @@ export default {
         });
     },
     fetchRatings(campingId) {
-      const url = `https://sunwoodsapi.azurewebsites.net/Rating/Camping/${campingId}`;
+      const url = `https://localhost:43203/Rating/Camping/${campingId}`;
       fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -217,7 +217,7 @@ export default {
       if (this.users[userId]) {
         return Promise.resolve(this.users[userId]);
       }
-      const url = `https://sunwoodsapi.azurewebsites.net/User/${userId}`;
+      const url = `https://localhost:43203/User/${userId}`;
       return fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -256,7 +256,7 @@ export default {
     date: currentDate // Include the current date
   };
   
-  fetch(`https://sunwoodsapi.azurewebsites.net/Rating`, {
+  fetch(`https://localhost:43203/Rating`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -326,7 +326,7 @@ export default {
     return; // Exit fetchCampings if dates are not in the correct order
   }
 
-  let url = `https://sunwoodsapi.azurewebsites.net/Camping?availableFrom=${formattedFromDate}&availableTo=${formattedToDate}`;
+  let url = `https://localhost:43203/Camping?availableFrom=${formattedFromDate}&availableTo=${formattedToDate}`;
   if (minPrice) {
     url += `&minPrice=${minPrice}`;
   }
@@ -386,7 +386,7 @@ formatDate(dateString, format) {
       const formattedFromDate = this.formatDate(this.availableFrom);
       const formattedToDate = this.availableTo ? this.formatDate(this.availableTo) : null; // Check if availableTo is not null
 
-      let url = `https://sunwoodsapi.azurewebsites.net/Camping?minPrice=${minPrice}`;
+      let url = `https://localhost:43203/Camping?minPrice=${minPrice}`;
 
 
 

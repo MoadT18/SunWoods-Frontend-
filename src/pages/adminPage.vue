@@ -178,7 +178,7 @@ export default {
   methods: {
     // Method to fetch campings
     fetchCampings() {
-      const url = `https://sunwoodsapi.azurewebsites.net/Camping`;
+      const url = `https://localhost:43203/Camping`;
       fetch(url)
         .then(response => {
           if (!response.ok) {
@@ -208,7 +208,7 @@ export default {
       this.newCamping.availableFrom = formattedAvailableFrom;
     this.newCamping.availableTo = formattedAvailableTo;
       
-      fetch("https://sunwoodsapi.azurewebsites.net/Camping", {
+      fetch("https://localhost:43203/Camping", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -293,7 +293,7 @@ export default {
 
       this.editedCamping.availableFrom = formattedAvailableFrom;
     this.editedCamping.availableTo = formattedAvailableTo;
-      fetch(`https://sunwoodsapi.azurewebsites.net/Camping/${this.editingCamping.id}`, {
+      fetch(`https://localhost:43203/Camping/${this.editingCamping.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
@@ -339,7 +339,7 @@ export default {
 
     // Method to delete camping
     deleteCamping() {
-      fetch(`https://sunwoodsapi.azurewebsites.net/Camping/${this.campingToDelete}`, {
+      fetch(`https://localhost:43203/Camping/${this.campingToDelete}`, {
         method: "DELETE"
       })
       .then(response => {

@@ -100,9 +100,24 @@
       
       <div>
         <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-        <input v-model="loginForm.password" type="password" placeholder="Password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2" id="password" required>
+        <div class="relative">
+          <input v-model="loginForm.password" :type="passwordFieldType" placeholder="Password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2" id="password" required>
+          <button @click="togglePasswordVisibility" type="button" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 focus:outline-none">
+            <!-- Use a condition to show different icons based on passwordFieldType -->
+            <svg v-if="passwordFieldType === 'password'" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 12s3-6 10-6 10 6 10 6-3 6-10 6-10-6-10-6z" />
+            </svg>
+            <svg v-else class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15l-4.586 4.586a2 2 0 01-2.828-2.828L9.172 12l-4.586-4.586a2 2 0 012.828-2.828L12 9.172l4.586-4.586a2 2 0 012.828 2.828L14.828 12l4.586 4.586a2 2 0 01-2.828 2.828L12 14.828l-4.586 4.586a2 2 0 01-2.828-2.828L9.172 12z" />
+            </svg>
+          </button>
+        </div>
       </div>
-
+      
+      
+      
+      
       <div v-if="loginError" class="text-red-600 text-sm">{{ loginStatus }}</div>
       <a href="#" @click="showResetPassword = true" class="text-blue-500 text-sm">Forgot Password?</a>
 
@@ -127,23 +142,49 @@
 
       <div>
         <label for="userName" class="block text-sm font-medium text-gray-700">UserName</label>
-        <input v-model="createAccountForm.userName" type="text" placeholder="UserName" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2" id="emailRegister" required>
+        <input v-model="createAccountForm.userName" type="text" placeholder="UserName" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2" id="userName" required>
       </div>
 
       <div>
-        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-        <input v-model="createAccountForm.email" type="email" placeholder="Email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2" id="emailRegister" required>
+        <label for="emailR" class="block text-sm font-medium text-gray-700">Email</label>
+        <input v-model="createAccountForm.email" type="email" placeholder="Email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2" id="emailR" required>
       </div>
       
       <div>
         <label for="passwordRegister" class="block text-sm font-medium text-gray-700">Password</label>
-        <input v-model="createAccountForm.hashedPassword" type="password" placeholder="Password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2" id="passwordRegister" required>
+        <div class="relative">
+          <input v-model="createAccountForm.hashedPassword" :type="passwordFieldType" placeholder="Password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2" id="passwordRegister" required>
+          <button @click="togglePasswordVisibility" type="button" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 focus:outline-none">
+            <!-- Use a condition to show different icons based on passwordFieldType -->
+            <svg v-if="passwordFieldType === 'password'" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 12s3-6 10-6 10 6 10 6-3 6-10 6-10-6-10-6z" />
+            </svg>
+            <svg v-else class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15l-4.586 4.586a2 2 0 01-2.828-2.828L9.172 12l-4.586-4.586a2 2 0 012.828-2.828L12 9.172l4.586-4.586a2 2 0 012.828 2.828L14.828 12l4.586 4.586a2 2 0 01-2.828 2.828L12 14.828l-4.586 4.586a2 2 0 01-2.828-2.828L9.172 12z" />
+            </svg>
+          </button>
+        </div>
       </div>
+      
 
       <div>
         <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
-        <input v-model="createAccountForm.confirmPassword" type="password" placeholder="Confirm Password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2" id="confirmPassword" required>
+        <div class="relative">
+          <input v-model="createAccountForm.confirmPassword" :type="passwordFieldType" placeholder="Password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2" id="confirmPassword" required>
+          <button @click="togglePasswordVisibility" type="button" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 focus:outline-none">
+            <!-- Use a condition to show different icons based on passwordFieldType -->
+            <svg v-if="passwordFieldType === 'password'" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 12s3-6 10-6 10 6 10 6-3 6-10 6-10-6-10-6z" />
+            </svg>
+            <svg v-else class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15l-4.586 4.586a2 2 0 01-2.828-2.828L9.172 12l-4.586-4.586a2 2 0 012.828-2.828L12 9.172l4.586-4.586a2 2 0 012.828 2.828L14.828 12l4.586 4.586a2 2 0 01-2.828 2.828L12 14.828l-4.586 4.586a2 2 0 01-2.828-2.828L9.172 12z" />
+            </svg>
+          </button>
+        </div>
       </div>
+      
 
       <div v-if="loginSuccess" class="text-green-600 text-sm">{{ loginStatus }}</div>
 
@@ -172,10 +213,34 @@
       <input v-model="resetPasswordForm.code" type="text" placeholder="Security Code" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2" id="resetCode" required>
 
       <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
-      <input v-model="resetPasswordForm.newPassword" type="password" placeholder="New Password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2" id="newPassword" required>
+      <div class="relative">
+        <input v-model="resetPasswordForm.newPassword" :type="passwordFieldType" placeholder="Password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2" id="newPassword" required>
+        <button @click="togglePasswordVisibility" type="button" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 focus:outline-none">
+          <!-- Use a condition to show different icons based on passwordFieldType -->
+          <svg v-if="passwordFieldType === 'password'" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 12s3-6 10-6 10 6 10 6-3 6-10 6-10-6-10-6z" />
+          </svg>
+          <svg v-else class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15l-4.586 4.586a2 2 0 01-2.828-2.828L9.172 12l-4.586-4.586a2 2 0 012.828-2.828L12 9.172l4.586-4.586a2 2 0 012.828 2.828L14.828 12l4.586 4.586a2 2 0 01-2.828 2.828L12 14.828l-4.586 4.586a2 2 0 01-2.828-2.828L9.172 12z" />
+          </svg>
+        </button>
+      </div>
       
       <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
-      <input v-model="resetPasswordForm.confirmPassword" type="password" placeholder="Confirm New Password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2" id="confirmPassword" required>
+      <div class="relative">
+        <input v-model="resetPasswordForm.confirmPassword" :type="passwordFieldType" placeholder="Confirm Password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2" id="confirmPassword" required>
+        <button @click="togglePasswordVisibility" type="button" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 focus:outline-none">
+          <!-- Use a condition to show different icons based on passwordFieldType -->
+          <svg v-if="passwordFieldType === 'password'" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 12s3-6 10-6 10 6 10 6-3 6-10 6-10-6-10-6z" />
+          </svg>
+          <svg v-else class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15l-4.586 4.586a2 2 0 01-2.828-2.828L9.172 12l-4.586-4.586a2 2 0 012.828-2.828L12 9.172l4.586-4.586a2 2 0 012.828 2.828L14.828 12l4.586 4.586a2 2 0 01-2.828 2.828L12 14.828l-4.586 4.586a2 2 0 01-2.828-2.828L9.172 12z" />
+          </svg>
+        </button>
+      </div>
       
       
       
@@ -260,7 +325,9 @@ export default {
       showResetCode: false,
       resetError: null,
       registerError: null,
-      resetPasswordError: null
+      resetPasswordError: null,
+      passwordFieldType: 'password' // Add this line
+
     };
   },
   computed: {
@@ -278,6 +345,9 @@ export default {
     }
   },
   methods: {
+    togglePasswordVisibility() {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+  },
     back() {
       this.loginStatus = '';
       this.loginForm.email = '';
@@ -297,7 +367,17 @@ export default {
 
       this.resetError = "Passwords do not match!";
       return;
-    } else {
+    } 
+    
+    else if (!this.isPasswordStrong(this.resetPasswordForm.newPassword)) {
+      this.resetError = true;
+
+
+      this.resetError = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
+      return;
+    } 
+    
+    else {
       this.resetError = false;
 
       this.resetError = ''; // Clear error message if passwords match
@@ -465,10 +545,13 @@ export default {
   try {
     if (this.createAccountForm.hashedPassword !== this.createAccountForm.confirmPassword) {
       this.loginError = true;
+      this.loginSuccess = false;
       this.loginStatus = "Passwords do not match!";
       return;
     } else if (!this.isPasswordStrong(this.createAccountForm.hashedPassword)) {
       this.loginError = true;
+      this.loginSuccess = false;
+
       this.loginStatus = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
       return;
     } else {
@@ -499,7 +582,10 @@ export default {
     this.loginError = false;
     this.loginStatus = "Account is created, log in!";
   } catch (error) {
-    console.error('Account creation failed:', error);
+    this.loginError = true;
+    this.loginSuccess = false;
+
+    this.loginStatus = error.response.data; // Set loginStatus to the error message received from the server
   }
 },
 isPasswordStrong(password) {

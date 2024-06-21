@@ -4,16 +4,19 @@
       <!-- Calendar Section -->
       <div class="w-full md:w-1/2 h-full overflow-y-auto md:overflow-hidden">
         <vc-date-picker
-          is-range
-          :value="selectedDates"
-          :min-date="parsedAvailableFrom"
-          :max-date="parsedAvailableTo"
-          @input="handleDateSelection"
-          style="margin-top: 50px; margin-left: 40px; width: 85%; height: 60%;"
-        ></vc-date-picker>
+        is-range
+        :value="selectedDates"
+        :min-date="parsedAvailableFrom"
+        :max-date="parsedAvailableTo"
+        @input="handleDateSelection"
+        
+        style="margin-top: 50px; margin-left: 40px; width: 85%; height: 60%;"
+      ></vc-date-picker>
+      
+      
         
         <div class="mt-8 text-center">
-          <button 
+          <button v-if="formattedStartDate < formattedEndDate" 
             :disabled="bookingInProgress" 
             class="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition duration-300 ease-in-out" 
             @click="bookNow">
@@ -37,10 +40,10 @@
           <span class="text-base md:text-base"><b>Price Per night:</b> {{ campingDetails.pricePerNight }}</span>
         </div>
         <h3 class="font-bold mb-1 md:mb-2">Selected Date:</h3>
-        <span v-if="formattedStartDate && formattedEndDate" class="text-base md:text-base">
+        <span v-if="formattedStartDate < formattedEndDate" class="text-base md:text-base">
           {{ formattedStartDate }} - {{ formattedEndDate }}
         </span>
-        <div v-if="formattedStartDate && formattedEndDate" class="mt-2 md:mt-2">
+        <div v-if="formattedStartDate < formattedEndDate" class="mt-2 md:mt-2">
           <span class="font-bold text-base md:text-sm">Number of Nights:</span><br>{{ getCountOfNights() }}<br>
           <span class="font-bold text-base md:text-sm">Total Price:</span><br>{{ getTotalPrice() }} 
         </div>
@@ -86,6 +89,20 @@ export default {
     }
   },
   methods: {
+    disableSingleDates(date) {
+    if (!this.selectedDates.start || !this.selectedDates.end) {
+      // Disable all dates if no range is selected
+      return true;
+    }
+    
+    // Convert date to a comparable format
+    const selectedStart = new Date(this.selectedDates.start).getTime();
+    const selectedEnd = new Date(this.selectedDates.end).getTime();
+    const currentDate = new Date(date).getTime();
+    
+    // Disable single dates within the selected range
+    return currentDate < selectedStart || currentDate > selectedEnd;
+  },
     getImageUrl(imageName) {
       // Assuming the images are stored in the assets folder
       return require(`@/assets/${imageName}`); // Use "@" alias to reference the "src" directory
@@ -97,8 +114,8 @@ export default {
     },
     handleDateSelection(dates) {
       // Update selectedDates
-      this.selectedDates = dates;
-      
+     
+    
       // Format dates as "dd/mm/yy"
       const formatDate = (date) => {
         const day = ('0' + date.getDate()).slice(-2);
@@ -111,8 +128,19 @@ export default {
       this.formattedStartDate = formatDate(new Date(dates.start));
       this.formattedEndDate = formatDate(new Date(dates.end));
 
+      if (this.formattedStartDate == this.formattedEndDate) {
+      // Alert the user to select a date range
+      alert('Please select a date range instead of a single day.');
+      return;
+    } 
+
+    else{
+      this.selectedDates = dates;
+
+     
       // Log formatted selected dates to console
       console.log('Selected Dates:', this.formattedStartDate, this.formattedEndDate);
+    }
     },
     getTotalPrice() {
       const pricePerNight = this.campingDetails.pricePerNight;
@@ -140,16 +168,19 @@ export default {
       return nights;
     },
     async bookNow() {
-      if (this.bookingInProgress) return; // Prevent multiple clicks
-      this.bookingInProgress = true;
 
-      // Check if dates are selected
-      if (!this.selectedDates || !this.selectedDates.start || !this.selectedDates.end) {
+      if(!this.formattedStartDate < this.formattedEndDate){
+        
+        alert("Please select a date range of at least one day.");
+        return;
+      }
+       // Check if dates are selected
+       if (!this.selectedDates || !this.selectedDates.start || !this.selectedDates.end) {
         alert('Please select a date range before booking.');
         this.bookingInProgress = false;
         return;
       }
-
+      
       // Ensure the selected date range spans at least two days
       const startDate = new Date(this.selectedDates.start);
       const endDate = new Date(this.selectedDates.end);
@@ -163,6 +194,12 @@ export default {
         this.bookingInProgress = false;
         return;
       }
+      if (this.bookingInProgress) return; // Prevent multiple clicks
+      this.bookingInProgress = true;
+
+     
+
+      
 
       // Retrieve user ID from localStorage
       const user = JSON.parse(localStorage.getItem('user'));

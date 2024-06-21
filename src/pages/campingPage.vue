@@ -4,7 +4,7 @@
       {{ filterVisible ? 'Collapse Filter' : 'Expand Filter' }}
     </button>
     <!-- FILTER -->
-    <div v-show="filterVisible" class="border border-gray-300 bg-white shadow-md rounded-lg w-full lg:w-72 p-4 mb-4 lg:mb-0 lg:mr-4">
+    <div v-show="filterVisible" class="border border-gray-300 bg-white shadow-md rounded-lg w-full lg:w-72 p-4 mb-4 lg:mb-0 lg:mr-4" style="max-height: 100%; overflow-y: auto;">
       <h3 class="text-center text-gray-800 font-semibold text-lg mb-4">Filter</h3>
 
       <!-- Price Range Slider -->
@@ -28,6 +28,55 @@
         <label for="available-to-slider" class="block text-gray-700 font-semibold mb-2">Available To</label>
         <input type="date" id="available-to-slider" class="w-full bg-gray-200 rounded-lg" v-model="availableTo" @input="applyDateFilter">
       </div>
+
+           <!-- Location filter -->
+<div class="mb-6">
+  <label class="block text-gray-700 font-semibold mb-2">Location</label>
+  <div class="grid grid-cols-1 gap-2">
+    <div class="flex items-center">
+      <!-- Wrap checkbox and label in a flex container -->
+      <input type="checkbox" id="odyssey-outdoors" value="Odyssey Outdoors" v-model="selectedLocations" @change="updateLocationFilter" class="hidden">
+      <label for="odyssey-outdoors" class="cursor-pointer rounded-lg p-4 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg flex-grow location-label"
+             :class="{ 'bg-black text-white': selectedLocations.includes('Odyssey Outdoors'), 'border-blue-500': selectedLocations.includes('Odyssey Outdoors') }">
+        <span class="text-xs md:text-sm lg:text-base">Odyssey Outdoors</span>
+      </label>
+    </div>
+    <div class="flex items-center">
+      <!-- Wrap checkbox and label in a flex container -->
+      <input type="checkbox" id="suntrail-tribe" value="SunTrail Tribe" v-model="selectedLocations" @change="updateLocationFilter" class="hidden">
+      <label for="suntrail-tribe" class="cursor-pointer rounded-lg p-4 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg flex-grow location-label"
+             :class="{ 'bg-red-400 text-white': selectedLocations.includes('SunTrail Tribe'), 'border-blue-500': selectedLocations.includes('SunTrail Tribe') }">
+        <span class="text-xs md:text-sm lg:text-base">SunTrail Tribe</span>
+      </label>
+    </div>
+    <div class="flex items-center">
+      <!-- Wrap checkbox and label in a flex container -->
+      <input type="checkbox" id="echo-ridge" value="Echo Ridge" v-model="selectedLocations" @change="updateLocationFilter" class="hidden">
+      <label for="echo-ridge" class="cursor-pointer rounded-lg p-4 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg flex-grow location-label"
+             :class="{ 'bg-blue-400 text-white': selectedLocations.includes('Echo Ridge'), 'border-blue-500': selectedLocations.includes('Echo Ridge') }">
+        <span class="text-xs md:text-sm lg:text-base">Echo Ridge</span>
+      </label>
+    </div>
+    <div class="flex items-center">
+      <!-- Wrap checkbox and label in a flex container -->
+      <input type="checkbox" id="valley-vista" value="Valley Vista" v-model="selectedLocations" @change="updateLocationFilter" class="hidden">
+      <label for="valley-vista" class="cursor-pointer rounded-lg p-4 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg flex-grow location-label"
+             :class="{ 'bg-yellow-400 text-white': selectedLocations.includes('Valley Vista'), 'border-blue-500': selectedLocations.includes('Valley Vista') }">
+        <span class="text-xs md:text-sm lg:text-base">Valley Vista</span>
+      </label>
+    </div>
+    <div class="flex items-center">
+      <!-- Wrap checkbox and label in a flex container -->
+      <input type="checkbox" id="hidden-hollows" value="Hidden Hollows" v-model="selectedLocations" @change="updateLocationFilter" class="hidden">
+      <label for="hidden-hollows" class="cursor-pointer rounded-lg p-4 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg flex-grow location-label"
+             :class="{ 'bg-green-400 text-white': selectedLocations.includes('Hidden Hollows'), 'border-blue-500': selectedLocations.includes('Hidden Hollows') }">
+        <span class="text-xs md:text-sm lg:text-base">Hidden Hollows</span>
+      </label>
+    </div>
+    <!-- Repeat similar blocks for other locations -->
+  </div>
+</div>
+
 
       <!-- Reset Button -->
       <button class="bg-red-600 text-white px-4 py-2 rounded-full mt-4 w-full font-semibold" @click="resetFilters">Reset Filters</button>
@@ -64,11 +113,11 @@
         </div>
 
         <div class="flex justify-between items-center mb-4">
-          <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
-            <a href="#" @click="goToBookCamperPage(camping)">Book Now!</a>
-          </button>
+          <a href="#" @click="goToBookCamperPage(camping)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+            Book Now!
+          </a>
         </div>
-
+        
        <!-- Comments and Ratings Section for each camping -->
 <div class="bg-gray-50 p-4 rounded shadow-inner">
   <h3 class="font-semibold mb-2">Comments and Ratings</h3>
@@ -82,6 +131,9 @@
       </div>
       <p class="text-gray-400 text-sm">{{rating.date}}</p>
       <p class="text-gray-600">{{ rating.comment }}</p>
+      <button v-if="isUserRating(rating.userId)" @click="confirmDeleteRating(camping.id, rating.id)" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition mt-2">
+        Delete
+      </button>
     </div>
     <button v-if="ratings[camping.id].length > 1" @click="toggleRatings" class="bg-slate-700 text-white px-4 py-2 rounded hover:bg-slate-900 transition mt-2">
       {{ showAllRatings ? 'Show Less' : 'Show All' }}
@@ -110,6 +162,21 @@
     <div v-else>
       <p class="text-center">No campings available.</p>
     </div>
+     <!-- Confirmation Modal -->
+  <div v-if="showConfirmDelete" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold mb-4">Confirm Delete</h2>
+      <p class="mb-4">Are you sure you want to delete this rating?</p>
+      <div class="flex justify-end space-x-4">
+        <button @click="cancelDeleteRating" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">
+          Cancel
+        </button>
+        <button @click="deleteRating" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">
+          Confirm
+        </button>
+      </div>
+    </div>
+    </div>
   </div>
 </template>
 
@@ -125,6 +192,7 @@ export default {
       campings: [],
       ratings: [],
       users: {}, // Store user details with userId as the key
+      selectedLocations: [], // New property to store selected locations
 
 
       userLoggedIn: false, // Add this property
@@ -136,7 +204,9 @@ export default {
       filterVisible: true,
       clickInProgress: false, // Flag to track if a click event is in progress
 
-
+      showConfirmDelete: false,
+      ratingToDelete: null,
+      campingIdToDelete: null,
 
 
     };
@@ -147,7 +217,38 @@ export default {
     //this.fetchRatings();
   },
   methods: {
-
+    confirmDeleteRating(campingId, ratingId) {
+      this.campingIdToDelete = campingId;
+      this.ratingToDelete = ratingId;
+      this.showConfirmDelete = true;
+    },
+    cancelDeleteRating() {
+      this.showConfirmDelete = false;
+      this.ratingToDelete = null;
+      this.campingIdToDelete = null;
+    },
+    deleteRating() {
+      const url = `https://localhost:43203/Rating/${this.ratingToDelete}`;
+      fetch(url, {
+        method: 'DELETE',
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to delete rating.');
+          }
+          this.showConfirmDelete = false;
+          this.fetchRatings(this.campingIdToDelete);
+        })
+        .catch(error => {
+          console.error('Error deleting rating:', error);
+        });
+    },
+    isUserRating(userId) {
+      const user = JSON.parse(localStorage.getItem('user'));
+      return user && user.id === userId;
+    },
+    // ... existing methods ...
+  
     toggleFilterVisibility() {
       this.filterVisible = !this.filterVisible;
     },
@@ -306,43 +407,53 @@ export default {
       } catch (error) {
         // If the image doesn't exist, return the URL of the default image
         console.error(`Image ${imageName} not found. Using default image.`);
-        return require(`../assets/empty.png`);
+        return require(`../assets/empty.jpg`);
       }
     },
 
-    applyDateFilter() {
-  // Fetch campings with date filter
-  const minPrice = document.getElementById("price-range").value;
+  // Apply filters
+  applyDateFilter() {
+  // Format availableFrom and availableTo dates
   const formattedFromDate = this.formatDate(this.availableFrom, 'dd-MM-yyyy');
-  const formattedToDate = this.availableTo ? this.formatDate(this.availableTo, 'dd-MM-yyyy') : null; // Check if availableTo is not null
-  if (formattedFromDate === null || formattedToDate === null) {
-    console.error('Invalid date format for availableFrom or availableTo');
-    return; // Exit fetchCampings if dates are invalid
-  }
+  const formattedToDate = this.availableTo ? this.formatDate(this.availableTo, 'dd-MM-yyyy') : null;
 
-  // Ensure availableFrom is before availableTo
-  if (formattedFromDate >= formattedToDate) {
-    console.error('Available From date must be before Available To date');
-    return; // Exit fetchCampings if dates are not in the correct order
-  }
+  // Construct URL for fetching campings
+  let url = 'https://localhost:43203/Camping?';
 
-  let url = `https://localhost:43203/Camping?availableFrom=${formattedFromDate}&availableTo=${formattedToDate}`;
-  if (minPrice) {
-    url += `&minPrice=${minPrice}`;
-  }
 
-  console.log("URL:", url); // Debugging log
 
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      this.campings = data;
-    })
-    .catch(error => {
-      console.error('Error fetching campings:', error);
-    });
+if (formattedFromDate && formattedToDate) {
+  url += `availableFrom=${formattedFromDate}&availableTo=${formattedToDate}&`;
+}
+
+// Add minPrice parameter if available
+const minPrice = document.getElementById("price-range").value;
+if (minPrice) {
+  url += `minPrice=${minPrice}&`;
+}
+
+// Add location filter if selected
+if (this.selectedLocations.length > 0) {
+  const encodedLocations = this.selectedLocations.map(location => encodeURIComponent(location));
+  url += `location=${encodedLocations.join(',')}&`;
+}
+
+// Remove trailing '&' if exists
+url = url.endsWith('&') ? url.slice(0, -1) : url;
+
+// Debugging log
+console.log("URL:", url);
+
+// Fetch campings based on the constructed URL
+fetch(url)
+  .then(response => response.json())
+  .then(data => {
+    this.campings = data;
+  })
+  .catch(error => {
+    console.error('Error fetching campings:', error);
+  });
 },
-
 formatDate(dateString, format) {
   // Check if dateString is not empty and has the expected format
   if (!dateString || !/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
@@ -374,7 +485,11 @@ formatDate(dateString, format) {
 
   return formattedDate;
 },
-
+updateLocationFilter() {
+    // Call applyDateFilter to update campings with new location filter
+    this.applyDateFilter();
+    this.updatePrice();
+  },
 
     updatePrice(event) {
       // Update price range slider
@@ -412,19 +527,33 @@ formatDate(dateString, format) {
         .catch(error => {
           console.error('Error fetching campings:', error);
         });
+        this.applyDateFilter();
+        this.updateLocationFilter();
+
+
     },
     resetFilters() {
-      // Reset all filter values
-      this.minPrice = 0;
-      this.availableFrom = '';
-      this.availableTo = '';
-      document.getElementById("price-range").value = 0;
-      document.getElementById("minPrice").textContent = "Є0"; // Update minPrice span to display 0
+  // Reset all filter values
+  this.minPrice = 0;
+  this.availableFrom = '';
+  this.availableTo = '';
+  document.getElementById("price-range").value = 0;
+  document.getElementById("minPrice").textContent = "€0"; // Update minPrice span to display €0
 
+  // Reset selectedLocations array
+  this.selectedLocations = [];
 
-      // Fetch all campings
-      this.fetchCampings();
-    },
+  // Remove background color classes from location labels
+  const locationLabels = document.querySelectorAll('.location-label');
+  locationLabels.forEach(label => {
+    label.classList.remove('bg-black', 'bg-red-400', 'bg-blue-400', 'bg-yellow-400', 'bg-green-400');
+    label.classList.remove('text-white');
+  });
+
+  // Fetch all campings
+  this.fetchCampings();
+},
+
 
 
     // Other methods for handling slider interaction

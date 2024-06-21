@@ -151,7 +151,7 @@ export default {
         return require(`../assets/${imageName}`);
       } catch (error) {
         console.error(`Image ${imageName} not found. Using default image.`);
-        return require(`../assets/empty.png`);
+        return require(`../assets/empty.jpg`);
       }
     },
     closeInfo() {
